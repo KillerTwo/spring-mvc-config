@@ -7,5 +7,6 @@
   <modules>
   	<module>spring-mvc-shiro-g</module>
   	<module>spring-mvc-shiro-a</module>
+  	<module>spring-mcv-shiro-g</module>
   </modules>
 </project>

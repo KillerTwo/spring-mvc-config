@@ -17,13 +17,15 @@
     <!-- 开启服务层接口的自动扫描 -->
     <context:component-scan base-package="org.lwt.service"/>
      <!-- 引入属性配置文件 -->
-    <context:property-placeholder location="classpath:data.properties"/>
-    <!-- 1. 配置数据源 -->
+    <!-- <context:property-placeholder location="classpath:data.properties"/> -->
+    
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!-- 1. 配置数据源，此处使用druid数据源 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-        <property name="driverClassName" value="${jdbc.driverClass}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.user}"/>
-        <property name="password" value="${jdbc.password}"/>
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/employees?useSSL=false&amp;serverTimezone=UTC&amp;nullCatalogMeansCurrent=true"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456root"/>
         
         <property name="filters" value="stat"/>
 
@@ -41,32 +43,7 @@
         <property name="testOnReturn" value="false"/>
     </bean>
 
-    <!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="mapperLocations">
-            <array>
-                <value>classpath:mapper/*.xml</value>
-            </array>
-        </property>
-        实体类存放的包
-        <property name="typeAliasesPackage" value="org.lwt.entity"/>
-        <property name="plugins">
-            <array>
-                <bean class="com.github.pagehelper.PageInterceptor">
-                    这里的几个配置主要演示如何使用，如果不理解，一定要去掉下面的配置
-                    <property name="properties">
-                        <value>
-                            helperDialect=mysql
-                            reasonable=true
-                            supportMethodsArguments=true
-                            params=count=countSql
-                            autoRuntimeDialect=true
-                        </value>
-                    </property>
-                </bean>
-            </array>
-        </property>
-    </bean> -->
+   
     
     <!-- 2. 创建SqlSession的工厂 -->
     <!-- dataSource:引用数据源，统一加载配置--> 
@@ -82,25 +59,51 @@
         
         <!-- 当mybatis的xml文件和mapper接口不在相同包下时，需要用mapperLocations属性指定xml文件的路径 -->   
         <!-- *是个通配符，代表所有的文件，**代表所有目录下 --> 
-        <property name="mapperLocations" value="classpath*:mappings/**/*.xml"/>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
         
         <!-- 指定mybatis核心配置文件 --> 
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!-- 添加分页插件 -->
+       <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                   <property name="properties">
+                        <value>
+                            helperDialect=mysql
+                            reasonable=true
+                            supportMethodsArguments=true
+                            params=count=countSql
+                            autoRuntimeDialect=true
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+        
     </bean>  
      <!-- 3. 自动扫描加载Sql映射文件/接口 -->
-    <bean id="mapperScannerConfigurer"  class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <bean id="mapperScannerConfigurer"  class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
 
         <!-- sqlSessionFactoryBeanName：代表延迟加载-->
         <!-- 这个配置的前提条件是：映射接口类文件(.java)和映射XML文件(.xml)需要放在相同的包下（com.demo.mapper）-->
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
-        <!-- <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" /> -->
+        <!-- <property name="sqlSessionFactory" ref="sqlSessionFactory"></property> -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 
-        <!-- basePackage:指定sql映射接口所在的包（自动扫描）-->
+        <!-- basePackage:指定sql映射接口所在的包（自动扫描），由于本项目中使用了通用mapper，所以该配置并不会起作用，需要后面通过通用mapper进行相应的配置。-->
         <property name="basePackage" value="org.lwt.dao"></property>
-    
+        <!-- <property name="sqlSessionTemplate" ref="sqlSession"></property> -->
+        
         <!-- 扫描basePackage下所有以@MyBatisDao注解的接口 -->
         <!-- <property name="annotationClass" value="com.demo.common.persistence.annotation.MyBatisDao"/> -->
+        <property name="annotationClass" value="org.apache.ibatis.annotations.Mapper"/>
+        <property name="properties">
+	        <value>
+	          mappers=tk.mybatis.mapper.common.Mapper
+	        </value>
+        </property>
+        
     </bean>
+    
     <!-- 4. 事务管理 --> 
     <!-- dataSource:引用上面定义的数据源 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -111,15 +114,12 @@
     <!-- 配置 Annotation 驱动，扫描@Transactional注解的类定义事务  -->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
     
-    
-
-    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-        <!-- 自动生成mapper接口存放位置，扫描指定包下的接口 -->
-        <property name="basePackage" value="org.lwt.dao"/>
-    </bean>
-
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
         <constructor-arg index="0" ref="sqlSessionFactory"/>
     </bean>
+    
+    <!-- <bean id="mapperFilter" class="org.lwt.filter.MapperFilter"/>
+
+    <bean class="org.lwt.filter.MapperBeanDefinitionRegistryPostProcessor"/> -->
    
 </beans>
