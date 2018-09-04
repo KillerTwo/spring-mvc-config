@@ -5,11 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/filter")
+//@RequestMapping("/filter")
 public class FilterController {
-  @RequestMapping(value="/test", method=RequestMethod.GET)
+  @RequestMapping(value="/login", method=RequestMethod.GET)
   public String testFilter() {
     System.out.println("test controller÷¥––°£°£°£");
     return "filter";
   }
+  
 }

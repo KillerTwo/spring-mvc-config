@@ -15,9 +15,9 @@ public class ServletConfig implements WebApplicationInitializer {
 
   @Override
   public void onStartup(ServletContext servletContext) throws ServletException {
-    System.out.println("开始添加一个 "+"servlet...");
+    /*System.out.println("开始添加一个 "+"servlet...");
     ServletRegistration.Dynamic myServlet = servletContext.addServlet("myServlet", MyServlet.class);
-    myServlet.addMapping("/myservlet/**");
+    myServlet.addMapping("/myservlet/**");*/
     //myServlet.setLoadOnStartup(1);
     /*FilterRegistration.Dynamic myFilter = servletContext.addFilter("myFilter", MyFilter.class);
     myFilter.addMappingForUrlPatterns(null, false, "/myservlet/**");

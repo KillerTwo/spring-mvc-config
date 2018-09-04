@@ -222,7 +222,7 @@
     
 	</dependencies>
 	<!-- 中央仓库配置 -->
-	<repositories>
+	<!-- <repositories>
 	  <repository>
 	    <id>nexus</id>
 	    <name>local private nexus</name>
@@ -256,7 +256,7 @@
 	        <enabled>true</enabled>
 	    </snapshots>
 	  </repository>
-  </repositories>
+  </repositories> -->
 	
 	<build>
 	  <!-- <resources>

@@ -89,7 +89,11 @@
         <!-- <property name="sqlSessionFactory" ref="sqlSessionFactory"></property> -->
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 
-        <!-- basePackage:指定sql映射接口所在的包（自动扫描），由于本项目中使用了通用mapper，所以该配置并不会起作用，需要后面通过通用mapper进行相应的配置。-->
+        
+        <!-- basePackage:指定mapper映射接口所在的包（自动扫描），
+						        由于本项目中使用了通用mapper，需要设置mapper接口所在的包，同时需要在mapper接口类上加上
+						    org.apache.ibatis.annotations.Mapper注解，才能通过bean管理mapper接口。
+        -->
         <property name="basePackage" value="org.lwt.dao"></property>
         <!-- <property name="sqlSessionTemplate" ref="sqlSession"></property> -->
         

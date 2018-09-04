@@ -1,11 +1,13 @@
 package org.lwt.config;
 
+import org.lwt.interceptor.MyInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -34,7 +36,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
       return resolver;
   }
-  
+
+  /**
+   * in ÃÌº”¿πΩÿ∆˜≈‰÷√
+   */
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    registry.addInterceptor(new MyInterceptor())
+    .addPathPatterns("/**")             // …Ë÷√¿πΩÿ¬∑æ∂
+    .excludePathPatterns("/login");     // ≈≈≥˝¿πΩÿ¬∑æ∂
+  }
 
   //≈‰÷√æ≤Ã¨◊ ‘¥µƒ¥¶¿Ì
   @Override

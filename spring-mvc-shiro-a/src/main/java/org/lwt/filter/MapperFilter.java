@@ -1,4 +1,4 @@
-package org.lwt.filter;
+/*package org.lwt.filter;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,4 +33,4 @@ public class MapperFilter implements Filter {
   public void destroy() {
       System.out.println("destroy");
   }
-}
+}*/

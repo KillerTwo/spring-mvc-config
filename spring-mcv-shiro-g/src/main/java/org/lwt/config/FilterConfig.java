@@ -22,10 +22,10 @@ public class FilterConfig implements WebApplicationInitializer {
     encodingFilter.addMappingForUrlPatterns(null, false, "/*");
     
     
-    FilterRegistration.Dynamic filter = servletContext.addFilter("myFilter", MyFilter.class);
+    //FilterRegistration.Dynamic filter = servletContext.addFilter("myFilter", MyFilter.class);
     //filter.addMappingForServletNames(null, false, "myServlet");
-    filter.addMappingForUrlPatterns(null, false, "/*");
-    filter.setInitParameter("exclusions", "*.jsp,*/myservlet");
+    //filter.addMappingForUrlPatterns(null, false, "/*");
+    //filter.setInitParameter("exclusions", "*.jsp,*/myservlet");
   }
 
 }
