@@ -1,6 +1,8 @@
 package org.lwt.config;
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
 
 import org.lwt.filter.MyFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -39,6 +41,15 @@ public class DispatcherInitializer extends AbstractAnnotationConfigDispatcherSer
     
     return new Filter[] {new MyFilter()};
   }*/
+
+  /**
+   *  m处理上传文件
+   */
+  @Override
+  protected void customizeRegistration(Dynamic registration) {
+    // 设置临时目录
+    registration.setMultipartConfig(new MultipartConfigElement("/tmp"));
+  }
   
 
 }
